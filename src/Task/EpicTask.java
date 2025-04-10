@@ -12,11 +12,6 @@ public class EpicTask extends MainTask {
         this.taskID = taskID;
     }
 
-    public EpicTask(Integer id, String name, String description, Status status, int taskID) {
-        super( name, description, status);
-        this.id = id;
-        this.taskID = taskID;
-    }
 
     public int getTaskID() {
         return taskID;
