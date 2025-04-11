@@ -1,40 +1,29 @@
 package Task;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class MainTask {
+public class Task {
     protected Integer id;
     protected final String name;
     protected final String description;
     protected Status status = Status.NEW;
-    protected List<Integer> epicListID = new ArrayList<>();
 
-    public MainTask(String name, String description) {
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public MainTask(String name, String description, Status status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
-    public void saveEpicID(int epicID) {
-        epicListID.add(epicID);
-    }
-
-    public void removeFromListEpicID(int epicID) {
-        epicListID.remove(Integer.valueOf(epicID));
-    }
-
-    public int getID() {
+    public int getId() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,14 +33,6 @@ public class MainTask {
 
     public String getDescription() {
         return description;
-    }
-
-    public List<Integer> getEpicListID() {
-        return epicListID;
-    }
-
-    public void setEpicListID(List<Integer> epicListID) {
-        this.epicListID = epicListID;
     }
 
     public Status getStatus() {
@@ -65,9 +46,9 @@ public class MainTask {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MainTask)) return false;
-        MainTask mainTask = (MainTask) o;
-        return id == mainTask.id;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return id == task.id;
     }
 
     @Override
@@ -77,12 +58,11 @@ public class MainTask {
 
     @Override
     public String toString() {
-        return "MainTask{" +
+        return "Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", epicListID=" + epicListID +
                 '}';
     }
 }
