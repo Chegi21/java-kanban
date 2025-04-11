@@ -7,6 +7,12 @@ public class EpicTask extends MainTask {
     private final int taskID;
     private List<Integer> subTaskListID = new ArrayList<>();
 
+    public EpicTask(String name, String description, int taskID) {
+        super(name, description);
+        this.status = Status.NEW;
+        this.taskID = taskID;
+    }
+
     public EpicTask(String name, String description, Status status, int taskID) {
         super(name, description, status);
         this.taskID = taskID;

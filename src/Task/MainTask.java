@@ -8,8 +8,13 @@ public class MainTask {
     protected Integer id;
     protected final String name;
     protected final String description;
-    protected Status status;
+    protected Status status = Status.NEW;
     protected List<Integer> epicListID = new ArrayList<>();
+
+    public MainTask(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public MainTask(String name, String description, Status status) {
         this.name = name;
