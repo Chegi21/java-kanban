@@ -1,6 +1,6 @@
 import Task.Epic;
 import Task.Status;
-import Task.Sub;
+import Task.Subtask;
 import Task.Task;
 import TaskManager.TaskManager;
 
@@ -44,29 +44,29 @@ public class Main {
             System.out.println(epic.toString());
         }
 
-        Sub sub1 = new Sub("Подзадача 1.1", "Описание 1.1", epic1.getId());
-        Sub sub2 = new Sub("Подзадача 1.2", "Описание 1.2", epic1.getId());
-        Sub sub3 = new Sub("Подзадача 2.1", "Описание 2.1", epic2.getId());
-        manager.addSubTask(sub1);
-        manager.addSubTask(sub2);
-        manager.addSubTask(sub3);
+        Subtask subtask1 = new Subtask("Подзадача 1.1", "Описание 1.1", epic1.getId());
+        Subtask subtask2 = new Subtask("Подзадача 1.2", "Описание 1.2", epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 2.1", "Описание 2.1", epic2.getId());
+        manager.addSubTask(subtask1);
+        manager.addSubTask(subtask2);
+        manager.addSubTask(subtask3);
         System.out.println("\nСписок подзадач:");
-        for (Sub sub : manager.getAllSubTasks()) {
-            System.out.println(sub.toString());
+        for (Subtask subtask : manager.getAllSubTasks()) {
+            System.out.println(subtask.toString());
         }
         System.out.println();
         System.out.println("Эпик 1 статус: " + manager.getEpicById(epic1.getId()).getStatus());
         System.out.println("Эпик 2 статус: " + manager.getEpicById(epic2.getId()).getStatus());
 
-        Sub sub1_2 = new Sub("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
-        Sub sub2_2 = new Sub("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
-        Sub sub3_2 = new Sub("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
-        manager.updateSubTask(sub1, sub1_2);
-        manager.updateSubTask(sub2, sub2_2);
-        manager.updateSubTask(sub3, sub3_2);
+        Subtask subtask1_2 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
+        Subtask subtask2_2 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
+        Subtask subtask3_2 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
+        manager.updateSubTask(subtask1, subtask1_2);
+        manager.updateSubTask(subtask2, subtask2_2);
+        manager.updateSubTask(subtask3, subtask3_2);
         System.out.println("\nОбновленный список подзадач:");
-        for (Sub sub : manager.getAllSubTasks()) {
-            System.out.println(sub.toString());
+        for (Subtask subtask : manager.getAllSubTasks()) {
+            System.out.println(subtask.toString());
         }
         System.out.println();
         System.out.println("Эпик 1 статус: " + manager.getEpicById(epic1.getId()).getStatus());
@@ -75,7 +75,7 @@ public class Main {
 
         manager.deleteTaskById(task2);
         manager.deleteEpicByID(epic2);
-        manager.deleteSubTaskBy(sub3);
+        manager.deleteSubTaskBy(subtask3);
 
         // Финальный список
         System.out.println("\nПосле удаления:");
@@ -90,8 +90,8 @@ public class Main {
         }
 
         System.out.println("\nСписок подзадач:");
-        for (Sub sub : manager.getAllSubTasks()) {
-            System.out.println(sub);
+        for (Subtask subtask : manager.getAllSubTasks()) {
+            System.out.println(subtask);
         }
 
 

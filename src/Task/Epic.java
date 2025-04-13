@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private List<Sub> subTasks = new ArrayList<>();
+    private List<Subtask> subTasks = new ArrayList<>();
 
     public Epic(String name, String description, int taskId) {
         super(name, description);
@@ -18,21 +18,21 @@ public class Epic extends Task {
     }
 
 
-    public List<Sub> getSubTaskListOfEpic() {
+    public List<Subtask> getSubTaskListOfEpic() {
         return subTasks;
     }
 
-    public void setSubTaskListOfEpic(List<Sub> subTasks) {
+    public void setSubTaskListOfEpic(List<Subtask> subTasks) {
         this.subTasks = subTasks;
     }
 
 
-    public void saveSubTaskOfEpic(Sub subTaskOfEpic) {
-        subTasks.add(subTaskOfEpic);
+    public void saveSubTaskOfEpic(Subtask subtaskTaskOfEpic) {
+        subTasks.add(subtaskTaskOfEpic);
     }
 
-    public void removeSubTaskOfEpic(Sub subTaskOfEpic) {
-        subTasks.remove(subTaskOfEpic);
+    public void removeSubTaskOfEpic(Subtask subtaskTaskOfEpic) {
+        subTasks.remove(subtaskTaskOfEpic);
     }
 
     @Override
