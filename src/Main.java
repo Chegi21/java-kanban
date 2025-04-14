@@ -28,8 +28,8 @@ public class Main {
             System.out.println(task.toString());
         }
 
-        Epic epic1 = new Epic("Эпик 1", "Описание эпика 1", task1.getId());
-        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2", task1.getId());
+        Epic epic1 = new Epic("Эпик 1", "Описание эпика 1");
+        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
         manager.addEpic(epic1);
         manager.addEpic(epic2);
         System.out.println("\nСписок эпиков:");
@@ -37,7 +37,7 @@ public class Main {
             System.out.println(epic.toString());
         }
 
-        Epic epic3 = new Epic("Новый Эпик 2", "Новое описание эпика 2", Status.IN_PROGRESS, task1.getId());
+        Epic epic3 = new Epic("Новый Эпик 2", "Новое описание эпика 2", Status.IN_PROGRESS);
         manager.updateEpic(epic2, epic3);
         System.out.println("\nОбновленный список эпиков:");
         for (Epic epic : manager.getAllEpics()) {
