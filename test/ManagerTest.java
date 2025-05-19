@@ -1,3 +1,4 @@
+import Managers.InMemoryTaskManager;
 import Task.Epic;
 import Task.Subtask;
 import Task.Task;
@@ -103,22 +104,29 @@ public class ManagerTest {
     }
 
     @Test
-    void testHistoryPutTaskInManager() {
-        Task taskOrigin = new Task("Задача 1", "Описание 1");
+    void testHistoryAddAndRemoveTaskInManager() {
         for (int i = 0; i < 10; i++) {
+            Task taskOrigin = new Task("Задача " + i, "Описание " + i);
             taskManager.addTask(taskOrigin);
         }
+        List<Task> addTaskListOfManager = taskManager.getAllTasks();
 
-        List<Task> taskListOfManager = taskManager.getAllTasks();
-        for (Task task : taskListOfManager) {
+        for (Task task : addTaskListOfManager) {
             taskManager.getTaskById(task.getId());
         }
+        List<Task> addTaskListOfHistory = taskManager.getHistory();
 
-        List<Task> taskListOfHistory = taskManager.getHistory();
-        for (Task taskOfHistory : taskListOfHistory) {
-            assertEquals(taskOrigin.getName(), taskOfHistory.getName());
-            assertEquals(taskOrigin.getDescription(), taskOfHistory.getDescription());
+        for (int i = 2; i < addTaskListOfManager.size() ; i = i + 3) {
+            Task task = addTaskListOfManager.get(i);
+            taskManager.deleteTaskById(task);
         }
+
+        List<Task> removeTaskListOfManager = taskManager.getAllTasks();
+        List<Task> removeTaskListOfHistory = taskManager.getHistory();
+
+        assertEquals(addTaskListOfManager, addTaskListOfHistory);
+        assertEquals(removeTaskListOfManager, removeTaskListOfHistory);
+
     }
 
 }

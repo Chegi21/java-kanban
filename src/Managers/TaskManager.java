@@ -20,9 +20,9 @@ public interface TaskManager {
 
     void deleteTaskById(Task task);
 
-    void deleteEpicByID(Epic epic);
+    void deleteEpicById(Epic epic);
 
-    void deleteSubTaskBy(Subtask subtask);
+    void deleteSubTaskById(Subtask subtask);
 
     void deleteAllSubTasksOfEpic(Epic epic);
 

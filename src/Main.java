@@ -132,8 +132,8 @@ public class Main {
 
         //Удаление
         taskManager.deleteTaskById(task2);
-        taskManager.deleteEpicByID(epic2);
-        taskManager.deleteSubTaskBy(subtask3);
+        taskManager.deleteEpicById(epic2);
+        taskManager.deleteSubTaskById(subtask3);
 
         System.out.println();
         System.out.println("\nОбновленный список задач после удаления:");
