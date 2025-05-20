@@ -14,7 +14,7 @@ public interface TaskManager {
 
     void addEpic(Epic epic);
 
-    void addSubTask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
     void deleteAllTasks();
 
@@ -22,7 +22,7 @@ public interface TaskManager {
 
     void deleteEpicById(Epic epic);
 
-    void deleteSubTaskById(Subtask subtask);
+    void deleteSubtaskById(Subtask subtask);
 
     void deleteAllSubTasksOfEpic(Epic epic);
 

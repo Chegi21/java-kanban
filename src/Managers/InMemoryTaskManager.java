@@ -44,7 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubTask(Subtask subtask) {
+    public void addSubtask(Subtask subtask) {
         if (subtask != null) {
             subtask.setId(generateId());
             subTasksMap.put(subtask.getId(), subtask);
@@ -83,7 +83,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteSubTaskById(Subtask subtask) {
+    public void deleteSubtaskById(Subtask subtask) {
         if (subtask != null) {
             Epic epic = epicsMap.get(subtask.getEpicId());
             if (epic != null) {
@@ -101,7 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
             List<Subtask> listSub = new ArrayList<>(epic.getSubTaskListOfEpic());
             if (!listSub.isEmpty()) {
                 for (Subtask subtask : listSub) {
-                    deleteSubTaskById(subtask);
+                    deleteSubtaskById(subtask);
                 }
             }
         }

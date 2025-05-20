@@ -1,4 +1,3 @@
-import Managers.InMemoryTaskManager;
 import Task.Epic;
 import Task.Subtask;
 import Task.Task;
@@ -27,7 +26,7 @@ public class ManagerTest {
         taskManager.addEpic(epic);
 
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", 1);
-        taskManager.addSubTask(subtask);
+        taskManager.addSubtask(subtask);
 
         List<Epic> epics = taskManager.getAllEpics();
         List<Subtask> subtasks = taskManager.getAllSubTasks();
@@ -45,7 +44,6 @@ public class ManagerTest {
 
     @Test
     void testAddAllTasksAndGetById() {
-
         Task task = new Task("Задача 1", "Описание 1");
         taskManager.addTask(task);
 
@@ -53,7 +51,7 @@ public class ManagerTest {
         taskManager.addEpic(epic);
 
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", 1);
-        taskManager.addSubTask(subtask);
+        taskManager.addSubtask(subtask);
 
         Task task1 = taskManager.getTaskById(task.getId());
         Epic epic1 = taskManager.getEpicById(epic.getId());
@@ -76,7 +74,7 @@ public class ManagerTest {
 
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", 1);
         subtask.setId(1);
-        taskManager.addSubTask(subtask);
+        taskManager.addSubtask(subtask);
 
         assertNotEquals(task, epic);
         assertNotEquals(task, subtask);
@@ -126,7 +124,33 @@ public class ManagerTest {
 
         assertEquals(addTaskListOfManager, addTaskListOfHistory);
         assertEquals(removeTaskListOfManager, removeTaskListOfHistory);
+    }
 
+    @Test
+    void testSaveIdIsEmptyAfterRemoveSubtask() {
+        Epic epicOrigen = new Epic("Epic1", "Epic Desc");
+        taskManager.addEpic(epicOrigen);
+
+        Subtask subtaskOrigen = new Subtask("Subtask1", "Sub Desc", epicOrigen.getId());
+        taskManager.addSubtask(subtaskOrigen);
+        taskManager.deleteSubtaskById(subtaskOrigen);
+
+        Epic epicUpdate = taskManager.getEpicById(epicOrigen.getId());
+        List<Subtask> subtaskList = epicUpdate.getSubTaskListOfEpic();
+        for (Subtask subtaskSearch : subtaskList) {
+            assertNotEquals(subtaskSearch.getEpicId(), subtaskOrigen.getEpicId());
+        }
+    }
+
+    @Test
+    void testImpactOfSettersOnData() {
+        Task taskOrigen = new Task("Original", "Desc");
+        taskManager.addTask(taskOrigen);
+
+        taskOrigen.setName("Changed Outside");
+        Task taskUpdate = taskManager.getTaskById(taskOrigen.getId());
+
+        assertEquals("Changed Outside", taskUpdate.getName());
     }
 
 }
