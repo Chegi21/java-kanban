@@ -1,39 +1,39 @@
 package Managers;
 
-public class Node<Task> {
-    private Task node;
+public class Node<T> {
+    private T node;
 
-    private Node<Task> nextNode;
+    private Node<T> nextNode;
 
-    private Node<Task> prevNode;
+    private Node<T> prevNode;
 
-    public Node(Node<Task> prevNode, Task node, Node<Task> nextNode) {
+    public Node(Node<T> prevNode, T node, Node<T> nextNode) {
         this.prevNode = prevNode;
         this.node = node;
         this.nextNode = nextNode;
     }
 
-    public Task getNode() {
+    public T getNode() {
         return node;
     }
 
-    public void setNode(Task node) {
+    public void setNode(T node) {
         this.node = node;
     }
 
-    public Node<Task> getNextNode() {
+    public Node<T> getNextNode() {
         return nextNode;
     }
 
-    public void setNextNode(Node<Task> nextNode) {
+    public void setNextNode(Node<T> nextNode) {
         this.nextNode = nextNode;
     }
 
-    public Node<Task> getPrevNode() {
+    public Node<T> getPrevNode() {
         return prevNode;
     }
 
-    public void setPrevNode(Node<Task> prevNode) {
+    public void setPrevNode(Node<T> prevNode) {
         this.prevNode = prevNode;
     }
 }

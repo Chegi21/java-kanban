@@ -22,7 +22,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void overwrite(Task task) {
         Node<Task> oldTail = tailNode;
-        Node<Task> newNode = new Node<Task>(oldTail, task, null);
+        Node<Task> newNode = new Node<>(oldTail, task, null);
         tailNode = newNode;
 
         if (oldTail == null) {
