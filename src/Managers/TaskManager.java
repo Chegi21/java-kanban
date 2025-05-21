@@ -14,15 +14,15 @@ public interface TaskManager {
 
     void addEpic(Epic epic);
 
-    void addSubTask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
     void deleteAllTasks();
 
     void deleteTaskById(Task task);
 
-    void deleteEpicByID(Epic epic);
+    void deleteEpicById(Epic epic);
 
-    void deleteSubTaskBy(Subtask subtask);
+    void deleteSubtaskById(Subtask subtask);
 
     void deleteAllSubTasksOfEpic(Epic epic);
 

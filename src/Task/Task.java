@@ -4,9 +4,10 @@ import java.util.Objects;
 
 public class Task {
     protected Integer id;
-    protected final String name;
-    protected final String description;
+    protected String name;
+    protected String description;
     protected Status status = Status.NEW;
+
 
     public Task(String name, String description) {
         this.name = name;
@@ -31,8 +32,17 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Status getStatus() {
