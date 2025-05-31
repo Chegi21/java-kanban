@@ -1,3 +1,4 @@
+import Managers.FileBackedTaskManager;
 import Task.Epic;
 import Task.Status;
 import Task.Subtask;
@@ -10,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        TaskManager taskManager = Manager.getDefault();
+        TaskManager taskManager = Manager.getFileBackedManager();
 
         // Создаем обычные задачи
         Task task1 = new Task("Задача 1", "Описание задачи 1");

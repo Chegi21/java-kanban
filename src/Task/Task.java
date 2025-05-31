@@ -7,7 +7,7 @@ public class Task {
     protected String name;
     protected String description;
     protected Status status = Status.NEW;
-
+    protected TaskType taskType = TaskType.TASK;
 
     public Task(String name, String description) {
         this.name = name;
@@ -18,6 +18,13 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description, Status status, TaskType taskType) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.taskType = taskType;
     }
 
     public int getId() {
@@ -53,6 +60,14 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -75,5 +90,6 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
 }
 
