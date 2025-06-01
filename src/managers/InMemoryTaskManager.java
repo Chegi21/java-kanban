@@ -178,7 +178,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubTask(Subtask oldSubtaskTask, Subtask newSubtaskTask) {
-        if (oldSubtaskTask != null && newSubtaskTask != null){
+        if (oldSubtaskTask != null && newSubtaskTask != null) {
             Epic epic = epicsMap.get(oldSubtaskTask.getEpicId());
             newSubtaskTask.setId(oldSubtaskTask.getId());
             subTasksMap.put(oldSubtaskTask.getId(), newSubtaskTask);
