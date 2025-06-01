@@ -88,6 +88,7 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", taskType=" + taskType +
                 '}';
     }
 

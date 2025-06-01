@@ -1,4 +1,3 @@
-import Managers.FileBackedTaskManager;
 import Task.Epic;
 import Task.Status;
 import Task.Subtask;
@@ -13,11 +12,19 @@ public class Main {
 
         TaskManager taskManager = Manager.getFileBackedManager();
 
+        //Загружаем содержимое файла
+        System.out.println();
+        System.out.println("Содержимое списка истории из файла сохранения:");
+        for (Task task : taskManager.getHistory()){
+            System.out.println(task.toString());
+        }
+
         // Создаем обычные задачи
         Task task1 = new Task("Задача 1", "Описание задачи 1");
         Task task2 = new Task("Задача 2", "Описание задачи 2");
         taskManager.addTask(task1);
         taskManager.addTask(task2);
+        System.out.println();
         System.out.println("Список задач:");
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(taskManager.getTaskById(task.getId()).getName() + ": " + taskManager.getTaskById(task.getId()).getDescription());
@@ -61,7 +68,9 @@ public class Main {
 
         //Обновляем эпик
         Epic epic3 = new Epic("Эпик 1", "С подзадачами 1", Status.IN_PROGRESS);
+        Epic epic4 = new Epic("Эпик 2", "С подзадачами 2", Status.IN_PROGRESS);
         taskManager.updateEpic(epic1, epic3);
+        taskManager.updateEpic(epic2, epic4);
         System.out.println("\nОбновленный список эпиков:");
         for (Epic epic : taskManager.getAllEpics()) {
             System.out.println(taskManager.getEpicById(epic.getId()).getName()  + ": " + taskManager.getEpicById(epic.getId()).getDescription());
@@ -76,7 +85,7 @@ public class Main {
         //Создаем подзадачи
         Subtask subtask1 = new Subtask("Подзадача 1.1", "Описание 1.1", epic1.getId());
         Subtask subtask2 = new Subtask("Подзадача 1.2", "Описание 1.2", epic1.getId());
-        Subtask subtask3 = new Subtask("Подзадача 1.3", "Описание 1.3", epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 2.1", "Описание 2.1", epic2.getId());
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
         taskManager.addSubtask(subtask3);
@@ -106,7 +115,7 @@ public class Main {
         //Обновление подзадач
         Subtask subtask1_2 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
         Subtask subtask2_2 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
-        Subtask subtask3_2 = new Subtask("Новая Подзадача 1.3", "Новое Описание 1.3", Status.DONE, epic2.getId());
+        Subtask subtask3_2 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
         taskManager.updateSubTask(subtask1, subtask1_2);
         taskManager.updateSubTask(subtask2, subtask2_2);
         taskManager.updateSubTask(subtask3, subtask3_2);

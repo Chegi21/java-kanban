@@ -8,6 +8,7 @@ import Task.Status;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import Exception.ManagerSaveException;
@@ -29,6 +30,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            reader.readLine();
             boolean isHistorySection = false;
 
             while ((line = reader.readLine()) != null) {
@@ -72,7 +74,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
         return manager;
     }
 
-    protected void save() {
+    public void save() {
         try (BufferedWriter bufferedWriter= new BufferedWriter(new FileWriter(file))) {
             bufferedWriter.write("id,type,name,status,description,epic\n");
 
@@ -108,17 +110,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
         for (Task task : manager.getHistory()) {
             taskId.add(String.valueOf(task.getId()));
         }
+        Collections.reverse(taskId);
         return String.join(",", taskId);
     }
 
     public static Task fromString(String line) {
         String[] stringTask = line.split(",");
-        int id = Integer.parseInt(stringTask[0]);
-        TaskType taskType = TaskType.valueOf(stringTask[1]);
-        String name = stringTask[2];
-        Status status = Status.valueOf(stringTask[3]);
-        String description = stringTask[4];
-        String epicId = stringTask[5];
+        int id;
+        TaskType taskType;
+        String name;
+        Status status;
+        String description;
+        String epicId = "";
+
+        if (stringTask.length < 6) {
+            id = Integer.parseInt(stringTask[0]);
+            taskType = TaskType.valueOf(stringTask[1]);
+            name = stringTask[2];
+            status = Status.valueOf(stringTask[3]);
+            description = stringTask[4];
+        } else {
+            id = Integer.parseInt(stringTask[0]);
+            taskType = TaskType.valueOf(stringTask[1]);
+            name = stringTask[2];
+            status = Status.valueOf(stringTask[3]);
+            description = stringTask[4];
+            epicId = stringTask[5];
+        }
+
 
         switch (taskType) {
             case TASK:

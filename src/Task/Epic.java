@@ -14,6 +14,7 @@ public class Epic extends Task {
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
+        this.taskType = TaskType.EPIC;
     }
 
     public Epic(String name, String description, Status status, TaskType taskType) {
@@ -40,8 +41,12 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 "Id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", taskType=" + taskType +
                 ", subTaskList=" + subTasks +
-                "} " + super.toString();
+                "} ";
     }
 }
 
