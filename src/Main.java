@@ -113,12 +113,12 @@ public class Main {
         }
 
         //Обновление подзадач
-        Subtask subtask1_2 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
-        Subtask subtask2_2 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
-        Subtask subtask3_2 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
-        taskManager.updateSubTask(subtask1, subtask1_2);
-        taskManager.updateSubTask(subtask2, subtask2_2);
-        taskManager.updateSubTask(subtask3, subtask3_2);
+        Subtask subtask12 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
+        Subtask subtask22 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
+        Subtask subtask32 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
+        taskManager.updateSubTask(subtask1, subtask12);
+        taskManager.updateSubTask(subtask2, subtask22);
+        taskManager.updateSubTask(subtask3, subtask32);
         System.out.println("\nОбновленный список подзадач:");
         for (Subtask subtask : taskManager.getAllSubTasks()) {
             System.out.println(taskManager.getSubtaskById(subtask.getId()).getName() + ": " + taskManager.getSubtaskById(subtask.getId()).getDescription());
