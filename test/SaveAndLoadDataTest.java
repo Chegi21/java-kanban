@@ -1,11 +1,10 @@
-import Managers.FileBackedTaskManager;
-import Managers.Manager;
-import org.junit.jupiter.api.AfterEach;
+import managers.FileBackedTaskManager;
+import managers.Manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Task.Task;
-import Task.Epic;
-import Task.Subtask;
+import task.Task;
+import task.Epic;
+import task.Subtask;
 
 import java.io.File;
 import java.io.IOException;
