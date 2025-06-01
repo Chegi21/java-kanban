@@ -15,7 +15,7 @@ public class Main {
         //Загружаем содержимое файла
         System.out.println();
         System.out.println("Содержимое списка истории из файла сохранения:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -32,7 +32,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после создания обычных задач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -46,7 +46,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после обновления обычных задач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -62,7 +62,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после создания эпиков:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -78,7 +78,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после обновления эпиков:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -96,7 +96,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после создания подзадач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -108,7 +108,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после вывода статусов эпиков:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -126,7 +126,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после обновления подзадач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -138,7 +138,7 @@ public class Main {
 
         System.out.println();
         System.out.println("История вызовов после обновления статусов эпиков:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -152,7 +152,7 @@ public class Main {
         }
         System.out.println();
         System.out.println("История вызовов после удаления задач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -164,7 +164,7 @@ public class Main {
         }
         System.out.println();
         System.out.println("История вызовов после удаления эпиков:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
 
@@ -174,7 +174,7 @@ public class Main {
         }
         System.out.println();
         System.out.println("История вызовов после удаления подзадач:");
-        for (Task task : taskManager.getHistory()){
+        for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
         }
     }
