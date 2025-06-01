@@ -115,6 +115,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static Task fromString(String line) {
+        int lengthMassiveMax = 6;
         String[] stringTask = line.split(",");
         int id;
         TaskType taskType;
@@ -123,7 +124,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description;
         String epicId = "";
 
-        if (stringTask.length < 6) {
+        if (stringTask.length < lengthMassiveMax) {
             id = Integer.parseInt(stringTask[0]);
             taskType = TaskType.valueOf(stringTask[1]);
             name = stringTask[2];
