@@ -18,7 +18,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected HistoryManager historyManager;
     private int nextId = 1;
 
-
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }

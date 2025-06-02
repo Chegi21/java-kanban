@@ -15,6 +15,13 @@ import exception.ManagerSaveException;
 import exception.ManagerLoadException;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
+    private final static int ID_FILE_INDEX = 0;
+    private final static int TYPE_FILE_INDEX = 1;
+    private final static int NAME_FILE_INDEX = 2;
+    private final static int STATUS_FILE_INDEX = 3;
+    private final static int DESCRIPTION_FILE_INDEX = 4;
+    private final static int EPIC_FILE_INDEX = 5;
+    private final static int MAX_FILE_INDEX = 6;
     private final File file;
 
     public FileBackedTaskManager(HistoryManager historyManager, File file) {
@@ -115,7 +122,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static Task fromString(String line) {
-        int lengthMassiveMax = 6;
         String[] stringTask = line.split(",");
         int id;
         TaskType taskType;
@@ -124,19 +130,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description;
         String epicId = "";
 
-        if (stringTask.length < lengthMassiveMax) {
-            id = Integer.parseInt(stringTask[0]);
-            taskType = TaskType.valueOf(stringTask[1]);
-            name = stringTask[2];
-            status = Status.valueOf(stringTask[3]);
-            description = stringTask[4];
+        if (stringTask.length < MAX_FILE_INDEX) {
+            id = Integer.parseInt(stringTask[ID_FILE_INDEX]);
+            taskType = TaskType.valueOf(stringTask[TYPE_FILE_INDEX]);
+            name = stringTask[NAME_FILE_INDEX];
+            status = Status.valueOf(stringTask[STATUS_FILE_INDEX]);
+            description = stringTask[DESCRIPTION_FILE_INDEX];
         } else {
-            id = Integer.parseInt(stringTask[0]);
-            taskType = TaskType.valueOf(stringTask[1]);
-            name = stringTask[2];
-            status = Status.valueOf(stringTask[3]);
-            description = stringTask[4];
-            epicId = stringTask[5];
+            id = Integer.parseInt(stringTask[ID_FILE_INDEX]);
+            taskType = TaskType.valueOf(stringTask[TYPE_FILE_INDEX]);
+            name = stringTask[NAME_FILE_INDEX];
+            status = Status.valueOf(stringTask[STATUS_FILE_INDEX]);
+            description = stringTask[DESCRIPTION_FILE_INDEX];
+            epicId = stringTask[EPIC_FILE_INDEX];
         }
 
 
