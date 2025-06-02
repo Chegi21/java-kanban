@@ -15,13 +15,13 @@ import exception.ManagerSaveException;
 import exception.ManagerLoadException;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private final static int ID_FILE_INDEX = 0;
-    private final static int TYPE_FILE_INDEX = 1;
-    private final static int NAME_FILE_INDEX = 2;
-    private final static int STATUS_FILE_INDEX = 3;
-    private final static int DESCRIPTION_FILE_INDEX = 4;
-    private final static int EPIC_FILE_INDEX = 5;
-    private final static int MAX_FILE_INDEX = 6;
+    private static final int ID_FILE_INDEX = 0;
+    private static final int TYPE_FILE_INDEX = 1;
+    private static final int NAME_FILE_INDEX = 2;
+    private static final int STATUS_FILE_INDEX = 3;
+    private static final int DESCRIPTION_FILE_INDEX = 4;
+    private static final int EPIC_FILE_INDEX = 5;
+    private static final int MAX_FILE_INDEX = 6;
     private final File file;
 
     public FileBackedTaskManager(HistoryManager historyManager, File file) {
