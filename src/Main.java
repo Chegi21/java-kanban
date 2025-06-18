@@ -5,6 +5,10 @@ import task.Task;
 import managers.Manager;
 import managers.TaskManager;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -37,7 +41,8 @@ public class Main {
         }
 
         //Обновляем обычную задача
-        Task task3 = new Task("Новая Задача 2", "Новое описание задачи 2", Status.IN_PROGRESS);
+        long durationTask = 60;
+        Task task3 = new Task("Новая Задача 2", "Новое описание задачи 2", Status.IN_PROGRESS, LocalDateTime.now(), Duration.ofMinutes(durationTask));
         taskManager.updateTask(task2, task3);
         System.out.println("\nОбновленный список задач:");
         for (Task task : taskManager.getAllTasks()) {
@@ -66,7 +71,7 @@ public class Main {
             System.out.println(task.toString());
         }
 
-        //Обновляем эпик
+        //Обновляем статус эпика вручную
         Epic epic3 = new Epic("Эпик 1", "С подзадачами 1", Status.IN_PROGRESS);
         Epic epic4 = new Epic("Эпик 2", "С подзадачами 2", Status.IN_PROGRESS);
         taskManager.updateEpic(epic1, epic3);
@@ -112,13 +117,34 @@ public class Main {
             System.out.println(task.toString());
         }
 
-        //Обновление подзадач
-        Subtask subtask12 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
-        Subtask subtask22 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
-        Subtask subtask32 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
+        //Обновление статуса подзадач с началом выполнения подзадач
+        long subTaskDuration1 = 30;
+        long subTaskDuration2 = 20;
+        long subTaskDuration3 = 45;
+        Subtask subtask12 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.IN_PROGRESS, LocalDateTime.now(), Duration.ofMinutes(subTaskDuration1), epic1.getId());
+        Subtask subtask22 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, LocalDateTime.now().plusMinutes(30), Duration.ofMinutes(subTaskDuration2), epic1.getId());
+        Subtask subtask32 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.IN_PROGRESS, LocalDateTime.now().plusMinutes(60), Duration.ofMinutes(subTaskDuration3), epic2.getId());
         taskManager.updateSubTask(subtask1, subtask12);
         taskManager.updateSubTask(subtask2, subtask22);
         taskManager.updateSubTask(subtask3, subtask32);
+        System.out.println("\nОбновленный список подзадач:");
+        for (Subtask subtask : taskManager.getAllSubTasks()) {
+            System.out.println(taskManager.getSubtaskById(subtask.getId()).getName() + ": " + taskManager.getSubtaskById(subtask.getId()).getDescription());
+        }
+
+        System.out.println();
+        System.out.println("История вызовов после обновления подзадач:");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task.toString());
+        }
+
+        //Обновление статуса подзадач в ручную
+        Subtask subtask13 = new Subtask("Новая Подзадача 1.1", "Новое Описание 1.1", Status.DONE, epic1.getId());
+        Subtask subtask23 = new Subtask("Новая Подзадача 1.2", "Новое Описание 1.2", Status.IN_PROGRESS, epic1.getId());
+        Subtask subtask33 = new Subtask("Новая Подзадача 2.1", "Новое Описание 2.1", Status.DONE, epic2.getId());
+        taskManager.updateSubTask(subtask12, subtask13);
+        taskManager.updateSubTask(subtask22, subtask23);
+        taskManager.updateSubTask(subtask32, subtask33);
         System.out.println("\nОбновленный список подзадач:");
         for (Subtask subtask : taskManager.getAllSubTasks()) {
             System.out.println(taskManager.getSubtaskById(subtask.getId()).getName() + ": " + taskManager.getSubtaskById(subtask.getId()).getDescription());
@@ -176,6 +202,11 @@ public class Main {
         System.out.println("История вызовов после удаления подзадач:");
         for (Task task : taskManager.getHistory()) {
             System.out.println(task.toString());
+        }
+
+        System.out.println("Список приоритентных задач:");
+        for (Task task : taskManager.getPrioritizedTasks()) {
+            System.out.println(task);
         }
     }
 }

@@ -1,5 +1,7 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -8,6 +10,9 @@ public class Task {
     protected String description;
     protected Status status = Status.NEW;
     protected TaskType taskType = TaskType.TASK;
+    protected Duration duration = Duration.ZERO;
+    protected LocalDateTime startTime = null;
+
 
     public Task(String name, String description) {
         this.name = name;
@@ -20,11 +25,21 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, Status status, TaskType taskType) {
+    public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public Task(String name, String description, Status status, TaskType taskType, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.taskType = taskType;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public int getId() {
@@ -47,7 +62,6 @@ public class Task {
         return description;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -62,6 +76,29 @@ public class Task {
 
     public TaskType getTaskType() {
         return taskType;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime != null) {
+            return  getStartTime().plus(getDuration());
+        }
+        return null;
     }
 
     public void setTaskType(TaskType taskType) {
