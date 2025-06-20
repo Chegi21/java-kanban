@@ -35,15 +35,15 @@ public interface TaskManager {
 
     List<Task> getAllTasks();
 
-    List<Task> getPrioritizedTasks();
-
     List<Epic> getAllEpics();
 
     List<Subtask> getAllSubTasks();
 
-    List<Subtask> getSubTasksOfEpic(int epicID);
+    List<Subtask> getSubTasksOfEpic(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 
     void updateTask(Task oldTask, Task newTask);
 

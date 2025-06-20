@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private List<Subtask> subTasks = new ArrayList<>();
-    private LocalDateTime endTime;
+    protected LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -19,6 +19,13 @@ public class Epic extends Task {
         super(name, description, status);
         this.taskType = TaskType.EPIC;
     }
+
+
+    public Epic(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        super(name, description, status, startTime, duration);
+        this.taskType = TaskType.EPIC;
+    }
+
 
     public Epic(String name, String description, Status status, TaskType taskType, LocalDateTime startTime, Duration duration) {
         super(name, description, status, taskType, startTime, duration);
@@ -85,6 +92,9 @@ public class Epic extends Task {
                 ", status=" + status +
                 ", taskType=" + taskType +
                 ", subTaskList=" + subTasks +
+                ", starTime=" + startTime +
+                ", endTime=" + endTime +
+                ", duration=" + duration +
                 "} ";
     }
 }

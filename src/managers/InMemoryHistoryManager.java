@@ -53,7 +53,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 node.getNextNode().setPrevNode(node.getPrevNode());
             }
 
-
             node.setNode(null);
             node.setPrevNode(null);
             node.setNextNode(null);

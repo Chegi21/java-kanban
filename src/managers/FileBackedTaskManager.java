@@ -182,9 +182,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String historyToString(HistoryManager manager) {
         List<String> taskId = new ArrayList<>();
-        for (Task task : manager.getHistory()) {
+        manager.getHistory().forEach(task -> {
             taskId.add(String.valueOf(task.getId()));
-        }
+        });
         Collections.reverse(taskId);
         return String.join(",", taskId);
     }
@@ -359,8 +359,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public List<Subtask> getSubTasksOfEpic(int epicID) {
-        return super.getSubTasksOfEpic(epicID);
+    public List<Subtask> getSubTasksOfEpic(int epicId) {
+        return super.getSubTasksOfEpic(epicId);
     }
 
     @Override

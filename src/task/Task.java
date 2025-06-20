@@ -126,6 +126,8 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", taskType=" + taskType +
+                ", starTime=" + startTime +
+                ", duration=" + duration +
                 '}';
     }
 

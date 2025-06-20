@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epicsMap = new HashMap<>();
     protected final Map<Integer, Subtask> subTasksMap = new HashMap<>();
     protected HistoryManager historyManager;
-    private final NavigableSet<Task> prioritizedTasks = new TreeSet<>(new TaskStartTimeComparator());
+    protected final NavigableSet<Task> prioritizedTasks = new TreeSet<>(new TaskStartTimeComparator());
     private int nextId = 1;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
@@ -88,26 +88,26 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpicById(Epic epic) {
         if (epic != null) {
-            deleteAllSubTasksOfEpic(epic);
             epicsMap.remove(epic.getId());
             historyManager.remove(epic.getId());
             prioritizedTasks.remove(epic);
+            deleteAllSubTasksOfEpic(epic);
         }
-
     }
 
     @Override
     public void deleteSubtaskById(Subtask subtask) {
         if (subtask != null) {
+            subTasksMap.remove(subtask.getId());
+            historyManager.remove(subtask.getId());
+            prioritizedTasks.remove(subtask);
+
             Epic epic = epicsMap.get(subtask.getEpicId());
             if (epic != null) {
                 epic.removeSubTaskOfEpic(subtask);
                 epic.calculationTimeFields();
                 updateStatus(epic);
             }
-            subTasksMap.remove(subtask.getId());
-            historyManager.remove(subtask.getId());
-            prioritizedTasks.remove(subtask);
         }
     }
 
@@ -116,10 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic != null) {
             List<Subtask> listSub = new ArrayList<>(epic.getSubTaskListOfEpic());
             if (!listSub.isEmpty()) {
-                for (Subtask subtask : listSub) {
-                    deleteSubtaskById(subtask);
-                }
-                epic.calculationTimeFields();
+                listSub.forEach(this::deleteSubtaskById);
             }
         }
     }
@@ -148,13 +145,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return new ArrayList<>(tasksMap.values());
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(prioritizedTasks);
     }
 
     @Override
-    public List<Task> getPrioritizedTasks() {
-        return new ArrayList<>(prioritizedTasks);
+    public List<Task> getAllTasks() {
+        return new ArrayList<>(tasksMap.values());
     }
 
     @Override
@@ -168,14 +165,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> getSubTasksOfEpic(int epicID) {
-        Epic epic = epicsMap.get(epicID);
+    public List<Subtask> getSubTasksOfEpic(int epicId) {
+        Epic epic = epicsMap.get(epicId);
 
         List<Subtask> listSubTask = new ArrayList<>();
         if (epic != null) {
-            for (Subtask subtask : epic.getSubTaskListOfEpic()) {
+            epic.getSubTaskListOfEpic().forEach(subtask -> {
                 listSubTask.add(subTasksMap.get(subtask.getId()));
-            }
+            });
         }
 
         return listSubTask;
@@ -217,8 +214,9 @@ public class InMemoryTaskManager implements TaskManager {
             subTasksMap.put(oldSubtaskTask.getId(), newSubtaskTask);
             prioritizedTasks.remove(oldSubtaskTask);
 
-            Epic epic = epicsMap.get(oldSubtaskTask.getId());
+            Epic epic = epicsMap.get(oldSubtaskTask.getEpicId());
             if (epic != null) {
+                epic.setSubTaskListOfEpic(getSubTasksOfEpic(epic.getId()));
                 epic.calculationTimeFields();
                 updateStatus(epic);
             }
@@ -265,7 +263,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-    private boolean isOverlapTask(Task newTask) {
+    public boolean isOverlapTask(Task newTask) {
         if (newTask.getStartTime() == null) {
             return true;
         }
