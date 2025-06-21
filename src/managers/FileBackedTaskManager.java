@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import exception.ManagerSaveException;
 import exception.ManagerLoadException;
@@ -91,19 +92,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             List<Task> tackList = super.getAllTasks();
             for (Task task : tackList) {
-                String startTime;
-                if (task.getStartTime() != null) {
-                    startTime = task.getStartTime().toString();
-                } else {
-                    startTime = START_TIME_NULL;
-                }
+                String startTime = Optional.ofNullable(task.getStartTime())
+                        .map(LocalDateTime::toString)
+                        .orElse(START_TIME_NULL);
 
-                String duration;
-                if (task.getDuration() != null) {
-                    duration = String.valueOf(task.getDuration().toMinutes());
-                } else {
-                    duration = DURATION_ZERO;
-                }
+                String duration = String.valueOf(
+                        Optional.ofNullable(task.getDuration())
+                                .map(Duration::toMinutes)
+                                .orElse(Long.valueOf(DURATION_ZERO))
+                );
 
                 bufferedWriter.write(toString(
                         task.getId(),
@@ -118,19 +115,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             List<Epic> epicList = super.getAllEpics();
             for (Epic epic : epicList) {
-                String startTime;
-                if (epic.getStartTime() != null) {
-                    startTime = epic.getStartTime().toString();
-                } else {
-                    startTime = START_TIME_NULL;
-                }
+                String startTime = Optional.ofNullable(epic.getStartTime())
+                        .map(LocalDateTime::toString)
+                        .orElse(START_TIME_NULL);
 
-                String duration;
-                if (epic.getDuration() != null) {
-                    duration = String.valueOf(epic.getDuration().toMinutes());
-                } else {
-                    duration = DURATION_ZERO;
-                }
+                String duration = String.valueOf(
+                        Optional.ofNullable(epic.getDuration())
+                                .map(Duration::toMinutes)
+                                .orElse(Long.valueOf(DURATION_ZERO))
+                );
+
                 bufferedWriter.write(toString(
                         epic.getId(),
                         epic.getTaskType(),
@@ -144,19 +138,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             List<Subtask> subtaskList = super.getAllSubTasks();
             for (Subtask subtask : subtaskList) {
-                String startTime;
-                if (subtask.getStartTime() != null) {
-                    startTime = subtask.getStartTime().toString();
-                } else {
-                    startTime = START_TIME_NULL;
-                }
+                String startTime = Optional.ofNullable(subtask.getStartTime())
+                        .map(LocalDateTime::toString)
+                        .orElse(START_TIME_NULL);
 
-                String duration;
-                if (subtask.getDuration() != null) {
-                    duration = String.valueOf(subtask.getDuration().toMinutes());
-                } else {
-                    duration = DURATION_ZERO;
-                }
+                String duration = String.valueOf(
+                        Optional.ofNullable(subtask.getDuration())
+                                .map(Duration::toMinutes)
+                                .orElse(Long.valueOf(DURATION_ZERO))
+                );
+
                 bufferedWriter.write(toString(
                         subtask.getId(),
                         subtask.getTaskType(),
