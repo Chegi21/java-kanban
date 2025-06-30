@@ -1,8 +1,8 @@
-package Managers;
+package managers;
 
-import Task.Task;
-import Task.Epic;
-import Task.Subtask;
+import task.Task;
+import task.Epic;
+import task.Subtask;
 
 import java.util.List;
 
@@ -14,15 +14,15 @@ public interface TaskManager {
 
     void addEpic(Epic epic);
 
-    void addSubTask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
     void deleteAllTasks();
 
     void deleteTaskById(Task task);
 
-    void deleteEpicByID(Epic epic);
+    void deleteEpicById(Epic epic);
 
-    void deleteSubTaskBy(Subtask subtask);
+    void deleteSubtaskById(Subtask subtask);
 
     void deleteAllSubTasksOfEpic(Epic epic);
 
@@ -38,9 +38,11 @@ public interface TaskManager {
 
     List<Subtask> getAllSubTasks();
 
-    List<Subtask> getSubTasksOfEpic(int epicID);
+    List<Subtask> getSubTasksOfEpic(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 
     void updateTask(Task oldTask, Task newTask);
 
