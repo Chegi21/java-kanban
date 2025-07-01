@@ -75,6 +75,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.addSubtask(subTask);
 
         manager.deleteAllTasks();
+        manager.deleteAllEpics();
+        manager.deleteAllESubtask();
 
         assertEquals(0, manager.getAllTasks().size());
         assertEquals(0, manager.getAllEpics().size());

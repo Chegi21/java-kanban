@@ -70,4 +70,13 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return tasks;
     }
+
+    @Override
+    public String toString() {
+        return "InMemoryHistoryManager{" +
+                "nodeHashMap=" + nodeHashMap +
+                ", headNode=" + headNode +
+                ", tailNode=" + tailNode +
+                '}';
+    }
 }

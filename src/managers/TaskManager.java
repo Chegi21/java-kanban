@@ -18,6 +18,10 @@ public interface TaskManager {
 
     void deleteAllTasks();
 
+    void deleteAllEpics();
+
+    void deleteAllESubtask();
+
     void deleteTaskById(Task task);
 
     void deleteEpicById(Epic epic);
@@ -51,6 +55,8 @@ public interface TaskManager {
     void updateSubTask(Subtask oldSubtaskTask, Subtask newSubtaskTask);
 
     void updateStatus(Epic epic);
+
+    boolean isOverlapTask(Task newTask);
 
     @Override
     String toString();
