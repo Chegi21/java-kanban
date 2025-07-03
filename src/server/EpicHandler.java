@@ -1,4 +1,4 @@
-package httpTaskServer;
+package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exception.NotFoundException;
 import managers.TaskManager;
-import task.Subtask;
+import task.Epic;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,14 +15,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
+public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager manager;
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
             .create();
 
-    public SubtaskHandler(TaskManager manager) {
+    public EpicHandler(TaskManager manager) {
         this.manager = manager;
     }
 
@@ -35,50 +35,53 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             switch (method) {
                 case "GET":
                     if (query == null) {
-                        sendText(exchange, gson.toJson(manager.getAllSubTasks()), STATUS_OK);
+                        sendText(exchange, gson.toJson(manager.getAllEpics()), STATUS_OK);
                     } else {
                         Optional<Integer> id = parseId(query);
                         if (id.isPresent()) {
-                            Subtask subtask = manager.getSubtaskById(id.get());
-                            if (subtask != null) {
-                                sendText(exchange, gson.toJson(subtask), STATUS_OK);
+                            Epic epic = manager.getEpicById(id.get());
+                            sendText(exchange, gson.toJson(epic), STATUS_OK);
+                        } else {
+                            sendText(exchange, "Ошибка при обработке запроса", STATUS_BAD_REQUEST);
+                        }
+                    }
+                    break;
+                case "POST":
+                    InputStream body = exchange.getRequestBody();
+                    String json = new String(body.readAllBytes(), StandardCharsets.UTF_8);
+                    Epic newEpic = gson.fromJson(json, Epic.class);
+                    if (query == null) {
+                        if (manager.isOverlapTask(newEpic)) {
+                            sendText(exchange, "Задача пересекается с существующей", STATUS_CONFLICT);
+                        } else {
+                            manager.addEpic(newEpic);
+                            sendText(exchange, "Эпик создан", STATUS_CREATED);
+                        }
+                    } else {
+                        Optional<Integer> id = parseId(query);
+                        if (id.isPresent()) {
+                            if (manager.isOverlapTask(newEpic)) {
+                                sendText(exchange, "Задача пересекается с существующей", STATUS_CONFLICT);
                             } else {
-                                sendText(exchange, "Подзадача не найдена", STATUS_TASK_NOT_FOUND);
+                                Epic oldEpic = manager.getEpicById(id.get());
+                                manager.updateEpic(oldEpic, newEpic);
+                                sendText(exchange, "Эпик обновлён", STATUS_CREATED);
                             }
                         } else {
                             sendText(exchange, "Ошибка при обработке запроса", STATUS_BAD_REQUEST);
                         }
                     }
                     break;
-
-                case "POST":
-                    InputStream body = exchange.getRequestBody();
-                    String json = new String(body.readAllBytes(), StandardCharsets.UTF_8);
-                    Subtask newSubtask = gson.fromJson(json, Subtask.class);
-
-                    if (newSubtask.getId() == 0) {
-                        if (manager.isOverlapTask(newSubtask)) {
-                            sendText(exchange, "Подзадача пересекается с существующей", STATUS_CONFLICT);
-                        } else {
-                            manager.addSubtask(newSubtask);
-                            sendText(exchange, "Подзадача создана", STATUS_CREATED);
-                        }
-                    } else {
-                        Subtask oldSubtask = manager.getSubtaskById(newSubtask.getId());
-                        manager.updateSubTask(oldSubtask, newSubtask);
-                        sendText(exchange, "Подзадача обновлёна", STATUS_CREATED);
-                    }
-                    break;
                 case "DELETE":
                     if (query == null) {
                         manager.deleteAllEpics();
-                        sendText(exchange, "Все подзадачи удалены", STATUS_OK);
+                        sendText(exchange, gson.toJson(manager.getAllEpics()), STATUS_OK);
                     } else {
                         Optional<Integer> id = parseId(query);
                         if (id.isPresent()) {
-                            Subtask subtask = manager.getSubtaskById(id.get());
-                            manager.deleteSubtaskById(subtask);
-                            sendText(exchange, "Подзадача удалёна", STATUS_OK);
+                            Epic epic = manager.getEpicById(id.get());
+                            manager.deleteEpicById(epic);
+                            sendText(exchange, "Эпик удалён", STATUS_OK);
                         } else {
                             sendText(exchange, "Ошибка при обработке запроса", STATUS_BAD_REQUEST);
                         }
@@ -94,3 +97,4 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 }
+

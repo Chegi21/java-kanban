@@ -1,4 +1,4 @@
-package httpTaskServer;
+package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
+public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager manager;
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
@@ -18,22 +18,18 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
             .create();
 
 
-    public HistoryHandler(TaskManager manager) {
+    public PrioritizedHandler(TaskManager manager) {
         this.manager = manager;
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-        try {
-            if ("GET".equals(method)) {
-                String json = gson.toJson(manager.getHistory());
-                sendText(exchange, json, STATUS_OK);
-            } else {
-                sendText(exchange, "Метод не поддерживается", STATUS_METHOD_NOT_FOUND);
-            }
-        } catch (Exception e) {
-            sendText(exchange, "Ошибка при обработке запроса", STATUS_BAD_REQUEST);
+        if (method.equals("GET")) {
+            sendText(exchange, gson.toJson(manager.getPrioritizedTasks()), STATUS_OK);
+        } else {
+            sendText(exchange, "Метод не поддерживается", STATUS_METHOD_NOT_FOUND);
         }
+        exchange.close();
     }
 }

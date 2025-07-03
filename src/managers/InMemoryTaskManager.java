@@ -161,7 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             throw new NotFoundException("Эпик не найден");
         }
-        List<Subtask> listSub = new ArrayList<>(epic.getSubTaskListOfEpic());
+        List<Subtask> listSub = new ArrayList<>(epic.getSubTaskListForEpic());
         if (!listSub.isEmpty()) {
             listSub.forEach(this::deleteSubtaskById);
         }
@@ -211,13 +211,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> getSubTasksOfEpic(int epicId) {
+    public List<Subtask> getSubTasksForEpic(int epicId) {
         Epic epic = epicsMap.get(epicId);
         if (epic == null) {
             throw new NotFoundException("Эпик не найден");
         }
         List<Subtask> listSubTask = new ArrayList<>();
-        epic.getSubTaskListOfEpic().forEach(subtask -> {
+        epic.getSubTaskListForEpic().forEach(subtask -> {
             listSubTask.add(subTasksMap.get(subtask.getId()));
         });
 
@@ -244,7 +244,7 @@ public class InMemoryTaskManager implements TaskManager {
             throw new NotFoundException("Эпик не найден");
         }
         newEpic.setId(oldEpic.getId());
-        newEpic.setSubTaskListOfEpic(oldEpic.getSubTaskListOfEpic());
+        newEpic.setSubTaskListOfEpic(oldEpic.getSubTaskListForEpic());
         newEpic.calculationTimeFields();
         updateStatus(newEpic);
         epicsMap.put(oldEpic.getId(), newEpic);
@@ -269,7 +269,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             throw new NotFoundException("Эпик не найден");
         }
-        epic.setSubTaskListOfEpic(getSubTasksOfEpic(epic.getId()));
+        epic.setSubTaskListOfEpic(getSubTasksForEpic(epic.getId()));
         epic.calculationTimeFields();
         updateStatus(epic);
 
@@ -283,7 +283,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             throw new NotFoundException("Эпик не найден");
         }
-        List<Subtask> listSubTaskOfEpic = new ArrayList<>(epic.getSubTaskListOfEpic());
+        List<Subtask> listSubTaskOfEpic = new ArrayList<>(epic.getSubTaskListForEpic());
         if (listSubTaskOfEpic.isEmpty()) {
             epic.setStatus(Status.NEW);
             return;

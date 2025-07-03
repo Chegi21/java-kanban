@@ -1,4 +1,4 @@
-package httpTaskServer;
+package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;

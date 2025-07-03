@@ -193,7 +193,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getSubTasksOfEpic() {
+    void getSubTasksForEpic() {
         Epic epic = new Epic("Задача 2", "Описание задачи 2");
         manager.addEpic(epic);
         Subtask subTask = new Subtask("Задача 3", "Описание задачи 3", epic.getId());
@@ -201,9 +201,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.addSubtask(subTask);
         manager.addSubtask(subTask2);
 
-        assertEquals(2, manager.getSubTasksOfEpic(epic.getId()).size());
-        assertEquals(subTask, manager.getSubTasksOfEpic(epic.getId()).get(0));
-        assertEquals(subTask2, manager.getSubTasksOfEpic(epic.getId()).get(1));
+        assertEquals(2, manager.getSubTasksForEpic(epic.getId()).size());
+        assertEquals(subTask, manager.getSubTasksForEpic(epic.getId()).get(0));
+        assertEquals(subTask2, manager.getSubTasksForEpic(epic.getId()).get(1));
 
     }
 

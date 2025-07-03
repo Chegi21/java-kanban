@@ -31,7 +31,7 @@ public class Epic extends Task {
         super(name, description, status, taskType, startTime, duration);
     }
 
-    public List<Subtask> getSubTaskListOfEpic() {
+    public List<Subtask> getSubTaskListForEpic() {
         return subTasks;
     }
 

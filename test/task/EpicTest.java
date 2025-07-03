@@ -87,7 +87,7 @@ class EpicTest extends TaskManagerTest<InMemoryTaskManager> {
 
 
     @Test
-    void getSubTaskListOfEpic() {
+    void getSubTaskListForEpic() {
         Epic epic = new Epic("Задача 2", "Описание задачи 2");
         manager.addEpic(epic);
         List<Subtask> subtaskList = new ArrayList<>(3);
@@ -99,7 +99,7 @@ class EpicTest extends TaskManagerTest<InMemoryTaskManager> {
             manager.addSubtask(subtaskList.get(i));
         }
 
-        assertNotNull(epic.getSubTaskListOfEpic());
+        assertNotNull(epic.getSubTaskListForEpic());
     }
 
     @Test
@@ -113,7 +113,7 @@ class EpicTest extends TaskManagerTest<InMemoryTaskManager> {
         }
         epic.setSubTaskListOfEpic(subtaskList);
 
-        assertNotNull(epic.getSubTaskListOfEpic());
+        assertNotNull(epic.getSubTaskListForEpic());
     }
 
     @Test
@@ -132,7 +132,7 @@ class EpicTest extends TaskManagerTest<InMemoryTaskManager> {
             manager.addSubtask(listAddSubtask.get(i));
         }
 
-        assertNotEquals(listEmpty, epic.getSubTaskListOfEpic());
+        assertNotEquals(listEmpty, epic.getSubTaskListForEpic());
     }
 
     @Test
@@ -146,9 +146,9 @@ class EpicTest extends TaskManagerTest<InMemoryTaskManager> {
         Subtask subTask3 = new Subtask("Задача 5", "Описание задачи 5", epic.getId());
         manager.addSubtask(subTask3);
 
-        List<Subtask> subtaskList = manager.getSubTasksOfEpic(epic.id);
+        List<Subtask> subtaskList = manager.getSubTasksForEpic(epic.id);
         epic.removeSubTaskOfEpic(subTask2);
-        List<Subtask> subtaskList2 = manager.getSubTasksOfEpic(epic.id);
+        List<Subtask> subtaskList2 = manager.getSubTasksForEpic(epic.id);
 
         assertNotEquals(subtaskList.size(), subtaskList2.size());
 

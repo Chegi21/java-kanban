@@ -1,4 +1,4 @@
-package httpTaskServer;
+package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,8 +50,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     InputStream body = exchange.getRequestBody();
                     String json = new String(body.readAllBytes(), StandardCharsets.UTF_8);
                     Task newTask = gson.fromJson(json, Task.class);
-
-                    if (newTask.getId() == 0) {
+                    if (query == null) {
                         if (manager.isOverlapTask(newTask)) {
                             sendText(exchange, "Задача пересекается с существующей", STATUS_CONFLICT);
                         } else {
@@ -59,9 +58,18 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                             sendText(exchange, "Задача создана", STATUS_CREATED);
                         }
                     } else {
-                        Task oldTask = manager.getTaskById(newTask.getId());
-                        manager.updateTask(oldTask, newTask);
-                        sendText(exchange, "Задача обновлена", STATUS_CREATED);
+                        Optional<Integer> id = parseId(query);
+                        if (id.isPresent()) {
+                            if (manager.isOverlapTask(newTask)) {
+                                sendText(exchange, "Задача пересекается с существующей", STATUS_CONFLICT);
+                            } else {
+                                Task oldTask = manager.getTaskById(id.get());
+                                manager.updateTask(oldTask, newTask);
+                                sendText(exchange, "Задача обновлена", STATUS_CREATED);
+                            }
+                        } else {
+                            sendText(exchange, "Ошибка при обработке запроса", STATUS_BAD_REQUEST);
+                        }
                     }
                     break;
                 case "DELETE":
@@ -83,8 +91,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 default:
                     sendText(exchange, "Метод не поддерживается", STATUS_METHOD_NOT_FOUND);
             }
-        }catch (NotFoundException e) {
-                sendText(exchange, e.getMessage(), STATUS_TASK_NOT_FOUND);
+        } catch (NotFoundException e) {
+            sendText(exchange, e.getMessage(), STATUS_TASK_NOT_FOUND);
         } catch (Exception e) {
             sendText(exchange, "Ошибка при обработке запроса: " + e.getMessage(), STATUS_BAD_REQUEST);
         }

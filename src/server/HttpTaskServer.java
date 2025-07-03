@@ -1,4 +1,4 @@
-package httpTaskServer;
+package server;
 
 import com.sun.net.httpserver.HttpServer;
 import managers.Manager;
@@ -11,8 +11,7 @@ public class HttpTaskServer {
     public static final int PORT = 8080;
     private final HttpServer server;
 
-    public HttpTaskServer() throws IOException {
-        TaskManager manager = Manager.getDefault();
+    public HttpTaskServer(TaskManager manager) throws IOException {
         server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         server.createContext("/tasks", new TaskHandler(manager));
@@ -32,7 +31,7 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
-        new HttpTaskServer().start();
+        new HttpTaskServer(Manager.getDefault()).start();
     }
 }
 
