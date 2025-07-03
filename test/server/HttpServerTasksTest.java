@@ -1,17 +1,13 @@
 package server;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import managers.InMemoryTaskManager;
 import managers.Manager;
-import managers.TaskManager;
 import org.junit.jupiter.api.*;
 import task.Task;
 import task.Status;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -19,13 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HttpServerTasksTest {
-    private TaskManager manager;
-    private HttpTaskServer taskServer;
-    private final Gson gson  = new GsonBuilder().
-            registerTypeAdapter(Duration.class, new DurationTypeAdapter()).
-            registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter()).
-            create();
+public class HttpServerTasksTest extends HttpServerManagerTest{
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -45,14 +35,7 @@ public class HttpServerTasksTest {
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15));
         String json = gson.toJson(task);
 
-        HttpClient client = HttpClient.newHttpClient();
-        URI uri = URI.create("http://localhost:8080/tasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).
-                POST(HttpRequest.BodyPublishers.ofString(json)).
-                header("Content-Type", "application/json").
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendPostRequest("http://localhost:8080/tasks", json);
 
         assertEquals(201, response.statusCode(), "Должен вернуться статус 201 CREATED");
 
@@ -66,13 +49,7 @@ public class HttpServerTasksTest {
         Task task = new Task("Task", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(10));
         manager.addTask(task);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/tasks")).
-                GET().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendGetRequest("http://localhost:8080/tasks");
 
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("Task"));
@@ -83,13 +60,7 @@ public class HttpServerTasksTest {
         Task task = new Task("ToDelete", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(5));
         manager.addTask(task);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/tasks?" + task.getId())).
-                DELETE().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendDeleteRequest("http://localhost:8080/tasks?");
 
         assertEquals(200, response.statusCode());
         assertTrue(manager.getAllTasks().isEmpty());

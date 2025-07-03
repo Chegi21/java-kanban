@@ -24,18 +24,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HttpServerSubtasksTest {
-    private TaskManager taskManager;
-    private HttpTaskServer taskServer;
-    private Gson gson = new GsonBuilder().
-            registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter()).
-            registerTypeAdapter(Duration.class, new DurationTypeAdapter()).
-            create();
+public class HttpServerSubtasksTest extends HttpServerManagerTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        taskManager = new InMemoryTaskManager(Manager.getDefaultHistory());
-        taskServer = new HttpTaskServer(taskManager);
+        manager = new InMemoryTaskManager(Manager.getDefaultHistory());
+        taskServer = new HttpTaskServer(manager);
         taskServer.start();
     }
 
@@ -47,23 +41,16 @@ public class HttpServerSubtasksTest {
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         Epic epic = new Epic("Epic", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(10));
-        taskManager.addEpic(epic);
+        manager.addEpic(epic);
         Subtask subtask = new Subtask("Test Subtask", "Description",
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15), epic.getId());
         String json = gson.toJson(subtask);
 
-        HttpClient client = HttpClient.newHttpClient();
-        URI uri = URI.create("http://localhost:8080/subtasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).
-                POST(HttpRequest.BodyPublishers.ofString(json)).
-                header("Content-Type", "application/json").
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendPostRequest("http://localhost:8080/subtasks", json);
 
         assertEquals(201, response.statusCode(), "Должен вернуться статус 201 CREATED");
 
-        List<Subtask> subtasks = taskManager.getAllSubTasks();
+        List<Subtask> subtasks = manager.getAllSubTasks();
         assertEquals(1, subtasks.size());
         assertEquals("Test Subtask", subtasks.get(0).getName());
     }
@@ -71,18 +58,12 @@ public class HttpServerSubtasksTest {
     @Test
     public void testGetTasks() throws IOException, InterruptedException {
         Epic epic = new Epic("Epic", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(10));
-        taskManager.addEpic(epic);
+        manager.addEpic(epic);
         Subtask subtask = new Subtask("Subtask", "Description",
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15), epic.getId());
-        taskManager.addSubtask(subtask);
+        manager.addSubtask(subtask);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/subtasks")).
-                GET().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendGetRequest("http://localhost:8080/subtasks");
 
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("Subtask"));
@@ -91,20 +72,14 @@ public class HttpServerSubtasksTest {
     @Test
     public void testDeleteTask() throws IOException, InterruptedException {
         Epic epic = new Epic("Epic", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(10));
-        taskManager.addEpic(epic);
+        manager.addEpic(epic);
         Subtask subtask = new Subtask("Subtask", "Description",
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15), 1);
-        taskManager.addSubtask(subtask);
+        manager.addSubtask(subtask);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/subtasks?" + subtask.getId())).
-                DELETE().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendDeleteRequest("http://localhost:8080/subtasks?");
 
         assertEquals(200, response.statusCode());
-        assertTrue(taskManager.getAllSubTasks().isEmpty());
+        assertTrue(manager.getAllSubTasks().isEmpty());
     }
 }

@@ -1,10 +1,7 @@
 package server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import managers.InMemoryTaskManager;
 import managers.Manager;
-import managers.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +9,6 @@ import task.Epic;
 import task.Status;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -23,13 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HttpServerEpicsTest {
-    private TaskManager manager;
-    private HttpTaskServer taskServer;
-    private final Gson gson  = new GsonBuilder().
-            registerTypeAdapter(Duration.class, new DurationTypeAdapter()).
-            registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter()).
-            create();
+public class HttpServerEpicsTest extends HttpServerManagerTest {
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -49,14 +37,7 @@ public class HttpServerEpicsTest {
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15));
         String json = gson.toJson(epic);
 
-        HttpClient client = HttpClient.newHttpClient();
-        URI uri = URI.create("http://localhost:8080/epics");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).
-                POST(HttpRequest.BodyPublishers.ofString(json)).
-                header("Content-Type", "application/json").
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendPostRequest("http://localhost:8080/epics", json);
 
         assertEquals(201, response.statusCode(), "Должен вернуться статус 201 CREATED");
 
@@ -70,13 +51,7 @@ public class HttpServerEpicsTest {
         Epic epic = new Epic("Epic", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(10));
         manager.addEpic(epic);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/epics")).
-                GET().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendGetRequest("http://localhost:8080/epics");
 
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("Epic"));
@@ -87,13 +62,7 @@ public class HttpServerEpicsTest {
         Epic epic = new Epic("ToDelete", "Desc", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(5));
         manager.addEpic(epic);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create("http://localhost:8080/epics?" + epic.getId())).
-                DELETE().
-                build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = sendDeleteRequest("http://localhost:8080/epics?");
 
         assertEquals(200, response.statusCode());
         assertTrue(manager.getAllEpics().isEmpty());
