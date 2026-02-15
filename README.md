@@ -94,6 +94,3 @@
 - Приложение Insomnia (Postman) для тестирования API
 - HttpClient, HttpRequest, HttpResponse, BodyHandler
 - Обработка ошибок HTTP-запросов (IOException, InterruptedException, IllegalArgumentException)
-
-
-- установленный [JDK версии 11](https://docs.aws.amazon.com/corretto/),
